@@ -1,0 +1,13 @@
+# Finance Hybrid Assistant POC
+#
+# The Streamlit app is intended to run in Streamlit in Snowflake.
+# In that runtime, Snowflake provides the Streamlit and Snowpark environment.
+#
+# This file is primarily for local documentation and optional local development.
+# It is not required for the in-Snowflake deployment itself.
+
+streamlit
+snowflake-snowpark-python
+pandas
+openpyxl
+reportlab
