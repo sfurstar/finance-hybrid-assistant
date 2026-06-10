@@ -938,7 +938,7 @@ def render_sidebar() -> None:
         st.session_state.latest_answer_type = ""
         st.session_state.latest_structured_result = None
         st.session_state.latest_supporting_evidence = None
-        st.rerun()
+        st.experimental_rerun()
 
     st.sidebar.divider()
     st.sidebar.subheader("Starter questions")
@@ -948,7 +948,7 @@ def render_sidebar() -> None:
             for question in questions:
                 if st.button(question, key=f"{section}_{question}"):
                     st.session_state.pending_prompt = question
-                    st.rerun()
+                    st.experimental_rerun()
 
 
 def render_hero() -> None:
@@ -1128,7 +1128,7 @@ def render_chat_input() -> None:
     st.session_state.latest_structured_result = structured_result
     st.session_state.latest_supporting_evidence = supporting_evidence
 
-    st.rerun()
+    st.experimental_rerun()
 
 
 def render_debug_panel() -> None:
