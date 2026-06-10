@@ -1019,7 +1019,7 @@ def render_overview() -> None:
                 ],
             ).properties(height=300)
             st.altair_chart(pie, use_container_width=True)
-            st.dataframe(recon.reset_index(drop=True), use_container_width=True)
+            st.dataframe(pd.DataFrame(recon), use_container_width=True)
 
     with c2:
         st.markdown('<div class="ns-section-card"><div class="ns-card-title">Top open balances</div><div class="ns-card-copy">Highest outstanding customer balances surfaced for quick collections triage.</div></div>', unsafe_allow_html=True)
@@ -1036,11 +1036,11 @@ def render_overview() -> None:
                 ],
             ).properties(height=300)
             st.altair_chart(bar, use_container_width=True)
-            st.dataframe(top_open.reset_index(drop=True), use_container_width=True)
+            st.dataframe(pd.DataFrame(top_open), use_container_width=True)
 
     with st.expander("Recent mismatch examples", expanded=False):
         if mismatches:
-            st.dataframe(mismatches.reset_index(drop=True), use_container_width=True)
+            st.dataframe(pd.DataFrame(mismatches), use_container_width=True)
 
 def render_chat_history() -> None:
     for msg in st.session_state.messages:
@@ -1081,11 +1081,11 @@ def render_latest_answer_panel() -> None:
     structured_result = st.session_state.latest_structured_result
     if structured_result and structured_result.get("rows"):
         st.markdown("**Supporting structured results**")
-        st.dataframe(structured_result["rows"].reset_index(drop=True), use_container_width=True)
+        st.dataframe(pd.DataFrame(structured_result["rows"]), use_container_width=True)
 
     if supporting and supporting.get("rows"):
         st.markdown(f"**{supporting['title']}**")
-        st.dataframe(supporting["rows"].reset_index(drop=True), use_container_width=True)
+        st.dataframe(pd.DataFrame(supporting["rows"]), use_container_width=True)
 
 
 def render_chat_input() -> None:
