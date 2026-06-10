@@ -25,7 +25,7 @@ finance-hybrid-assistant/
 │   ├── demo-script.md
 │   ├── cost-model-notes.md
 │   └── rebuild-runbook.md
-├── setup code/
+├── setup_code/
 │   ├── python/
 │   └── sql/
 ├── requirements.txt
@@ -49,7 +49,7 @@ Contains supporting documentation for:
 - cost and pricing notes
 - rebuild instructions for a fresh environment
 
-#### `setup code/`
+#### `setup_code/`
 Contains the build scripts, listed in execution order, used to create the environment and demo objects in Snowflake.
 
 - `python/` contains helper scripts such as invoice PDF generation
@@ -192,7 +192,7 @@ Optional additional prompts:
 ---
 
 ## Setup sequence
-The `setup code/sql/` folder is organized in execution order.
+The `setup_code/sql/` folder is organized in execution order.
 
 At a high level the build process is:
 
