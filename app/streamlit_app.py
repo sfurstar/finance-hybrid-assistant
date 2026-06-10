@@ -12,7 +12,7 @@ import pandas as pd
 
 APP_TITLE = "Financial System Agent"
 APP_SUBTITLE = "Northstar Business Analytics"
-AGENT_NAME = "FIN_ENT_AI_POC.APP.FINANCE_HYBRID_AGENT_POC"
+AGENT_NAME = "FIN_ENT_AI_POC2.APP.FINANCE_HYBRID_AGENT_POC2"
 
 BRAND = {
     "navy": "#0F2747",
@@ -408,7 +408,7 @@ def get_reconciliation_summary() -> List[Dict[str, Any]]:
     rows = session.sql(
         """
         SELECT OVERALL_RECON_STATUS, COUNT(*) AS INVOICE_COUNT
-        FROM FIN_ENT_AI_POC.CURATED_FINANCE.INVOICE_RECON_V
+        FROM FIN_ENT_AI_POC2.CURATED_FINANCE.INVOICE_RECON_V
         GROUP BY OVERALL_RECON_STATUS
         ORDER BY OVERALL_RECON_STATUS
         """
@@ -422,7 +422,7 @@ def get_top_open_balances() -> List[Dict[str, Any]]:
     rows = session.sql(
         """
         SELECT CUSTOMER_NAME, TOTAL_OPEN_AMOUNT, TOTAL_OVERDUE_AMOUNT
-        FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
+        FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
         ORDER BY TOTAL_OPEN_AMOUNT DESC
         LIMIT 5
         """
@@ -436,7 +436,7 @@ def get_recent_mismatches() -> List[Dict[str, Any]]:
     rows = session.sql(
         """
         SELECT INVOICE_ID, RECON_EXCEPTION_DETAIL, ERP_AMOUNT, DOC_AMOUNT
-        FROM FIN_ENT_AI_POC.CURATED_FINANCE.INVOICE_RECON_V
+        FROM FIN_ENT_AI_POC2.CURATED_FINANCE.INVOICE_RECON_V
         WHERE OVERALL_RECON_STATUS = 'MISMATCH'
         ORDER BY INVOICE_ID
         LIMIT 10
@@ -633,7 +633,7 @@ def get_structured_result(prompt: str) -> Optional[Dict[str, Any]]:
             SELECT
                 CUSTOMER_NAME,
                 SUM(REVENUE_AMOUNT) AS TOTAL_REVENUE
-            FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_REVENUE_MTH_V
+            FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_REVENUE_MTH_V
             GROUP BY CUSTOMER_NAME
             ORDER BY TOTAL_REVENUE DESC, CUSTOMER_NAME
             """
@@ -650,7 +650,7 @@ def get_structured_result(prompt: str) -> Optional[Dict[str, Any]]:
                 CUSTOMER_NAME,
                 TOTAL_OPEN_AMOUNT,
                 TOTAL_OVERDUE_AMOUNT
-            FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
+            FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
             ORDER BY TOTAL_OPEN_AMOUNT DESC, CUSTOMER_NAME
             """
         ).collect()
@@ -666,7 +666,7 @@ def get_structured_result(prompt: str) -> Optional[Dict[str, Any]]:
                 CUSTOMER_NAME,
                 TOTAL_OVERDUE_AMOUNT,
                 TOTAL_OPEN_AMOUNT
-            FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
+            FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V
             ORDER BY TOTAL_OVERDUE_AMOUNT DESC, CUSTOMER_NAME
             """
         ).collect()
@@ -685,7 +685,7 @@ def get_structured_result(prompt: str) -> Optional[Dict[str, Any]]:
                 REVENUE_AMOUNT,
                 REGION,
                 INDUSTRY
-            FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_REVENUE_MTH_V
+            FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_REVENUE_MTH_V
             ORDER BY REVENUE_MONTH DESC, CUSTOMER_NAME
             """
         ).collect()
@@ -709,7 +709,7 @@ def get_document_evidence(invoice_id: str) -> Optional[Dict[str, Any]]:
             TOTAL_DUE,
             PAYMENT_TERMS,
             PO_NUMBER
-        FROM FIN_ENT_AI_POC.CURATED_DOCS.INVOICE_EXTRACT
+        FROM FIN_ENT_AI_POC2.CURATED_DOCS.INVOICE_EXTRACT
         WHERE INVOICE_NUMBER = '{invoice_id}'
         """
     ).collect()
@@ -742,7 +742,7 @@ def get_hybrid_evidence(invoice_id: str) -> Optional[Dict[str, Any]]:
             DOC_PO_NUMBER_STATUS,
             OVERALL_RECON_STATUS,
             RECON_EXCEPTION_DETAIL
-        FROM FIN_ENT_AI_POC.CURATED_FINANCE.INVOICE_RECON_V
+        FROM FIN_ENT_AI_POC2.CURATED_FINANCE.INVOICE_RECON_V
         WHERE INVOICE_ID = '{invoice_id}'
         """
     ).collect()
@@ -764,8 +764,8 @@ def get_customer_mismatch_evidence() -> Optional[Dict[str, Any]]:
             cb.CUSTOMER_NAME,
             cb.TOTAL_OVERDUE_AMOUNT,
             COUNT(ir.INVOICE_ID) AS MISMATCHED_INVOICE_COUNT
-        FROM FIN_ENT_AI_POC.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V cb
-        JOIN FIN_ENT_AI_POC.CURATED_FINANCE.INVOICE_RECON_V ir
+        FROM FIN_ENT_AI_POC2.CURATED_FINANCE.CUSTOMER_BALANCE_SUM_V cb
+        JOIN FIN_ENT_AI_POC2.CURATED_FINANCE.INVOICE_RECON_V ir
           ON cb.CUSTOMER_NAME = ir.ERP_CUSTOMER_NAME
         WHERE cb.TOTAL_OVERDUE_AMOUNT > 0
           AND ir.OVERALL_RECON_STATUS = 'MISMATCH'
