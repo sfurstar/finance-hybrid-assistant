@@ -4,3 +4,6 @@ __pycache__/
 .env
 .venv/
 *.log
+# Invoice PDFs - generated locally, not tracked in repo
+poc_invoices/
+invoices/
