@@ -1,0 +1,6 @@
+use role accountadmin;
+
+CREATE COMPUTE POOL IF NOT EXISTS SYSTEM_COMPUTE_POOL_CPU
+  MIN_NODES = 1
+  MAX_NODES = 2
+  INSTANCE_FAMILY = 'CPU_XSMALL'; -- Adjust based on memory needs
