@@ -6,6 +6,7 @@ entities:
     title: "Financial_Hybrid_Agent_v2"
     query_warehouse: "FIN_ENT_APP_POC2_WH"
     compute_pool: "SYSTEM_COMPUTE_POOL_CPU"
+    runtime_name: "SYSTEM_RUNTIME"
     artifacts:
       - pyproject.toml
       - streamlit_app.py
