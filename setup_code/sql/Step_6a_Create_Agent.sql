@@ -8,7 +8,7 @@ CREATE OR REPLACE AGENT FINANCE_HYBRID_AGENT_POC2
   FROM SPECIFICATION
 $$
 models:
-  orchestration: claude-sonnet-4-5
+  orchestration: claude-4-sonnet
 
 orchestration:
   budget:
@@ -21,31 +21,31 @@ instructions:
   response: "Answer clearly and concisely. For structured answers include key numbers. For document answers include relevant invoice evidence."
   sample_questions:
     - question: "What is total revenue by customer?"
-      answer: "I will use the finance semantic view to calculate total revenue by customer."
     - question: "Which invoices have mismatches?"
-      answer: "I will analyze the reconciliation data and summarize the mismatched invoices."
     - question: "What does invoice INV-1010 say about the total amount due?"
-      answer: "I will search the invoice document content and return the relevant evidence."
     - question: "Compare ERP and invoice document values for INV-1010."
-      answer: "I will combine structured reconciliation data with invoice document retrieval."
 
 tools:
-  - tool_type: cortex_analyst_tool
-    tool_name: FinanceAnalyst
-    tool_resources:
-      semantic_view: FIN_ENT_AI_POC2.SEMANTIC.FINANCE_ANALYST_SV
-      warehouse: FIN_ENT_APP_POC2_WH
+  - tool_spec:
+      type: "cortex_analyst_text_to_sql"
+      name: "FinanceAnalyst"
+      description: "Use for structured finance questions about revenue, AR, invoices, and balances"
+  - tool_spec:
+      type: "cortex_search"
+      name: "InvoiceSearch"
+      description: "Use for invoice document retrieval and evidence"
 
-  - tool_type: cortex_search_tool
-    tool_name: InvoiceSearch
-    tool_resources:
-      cortex_search_service: FIN_ENT_AI_POC2.SEARCH.INVOICE_SEARCH_SVC
-      max_results: 5
-      title_column: DOCUMENT_ID
-      id_column: DOCUMENT_ID
+tool_resources:
+  FinanceAnalyst:
+    semantic_view: "FIN_ENT_AI_POC2.SEMANTIC.FINANCE_ANALYST_SV"
+    warehouse: FIN_ENT_APP_POC2_WH
+  InvoiceSearch:
+    name: "FIN_ENT_AI_POC2.SEARCH.INVOICE_SEARCH_SVC"
+    max_results: "5"
+    title_column: "DOCUMENT_ID"
+    id_column: "DOCUMENT_ID"
 $$;
 
--- verify
 SHOW AGENTS IN SCHEMA FIN_ENT_AI_POC2.APP;
 
 DESCRIBE AGENT FIN_ENT_AI_POC2.APP.FINANCE_HYBRID_AGENT_POC2;
